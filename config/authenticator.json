@@ -1,0 +1,6 @@
+{
+    "default": "PrivateKey",
+    "extra": {
+        "PrivateKey": ["Foo"]  
+    }
+}
