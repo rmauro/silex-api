@@ -6,6 +6,7 @@ use Symfony\Component\HttpKernel\Log\NullLogger;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 
+
 class Application  extends \Silex\Application
 {
     public function __construct($env, $basePath) 
@@ -17,7 +18,10 @@ class Application  extends \Silex\Application
         $this->loadConfig($env);
         $this->loadMonolog();
         $this->loadValidation();
+        $this->loadDB();
+        $this->loadAuthenticator();
         $this->loadControllers();
+                
     }
     
     protected function loadHttpBase()
@@ -49,7 +53,7 @@ class Application  extends \Silex\Application
     
     protected function loadAuthenticator()
     {
-        $this->register(new \Api\Provider\Authenticator(), array(
+        $this->register(new \App\Provider\Authenticator(), array(
             'auth.config' => $this['basePath'].'/config/authenticator.json'
         ));
     }
@@ -62,5 +66,10 @@ class Application  extends \Silex\Application
     protected function loadControllers()
     {
         $this->mount('/', new Provider\Controller());
+    }
+    
+    protected function loadDB()
+    {
+        $this->register(new \App\Provider\DB(),array('config'=> $this['config']['database']));
     }
 }

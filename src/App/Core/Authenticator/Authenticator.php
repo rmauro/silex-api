@@ -1,6 +1,6 @@
 <?php
 
-namespace Api\Core\Authenticator;
+namespace App\Core\Authenticator;
 
 abstract class Authenticator
 {
@@ -17,8 +17,7 @@ abstract class Authenticator
         $this->app = $app;
         $this->request = $request;
 
-        $this->container    = $app['sa-container'];
-        $this->data         = \Util\Json::decodeArray($request->get('json-data'), true);
+        $this->data         = json_decode($request->get('json-data'), true);
         $this->publicKey    = $request->get('public-key');
         $this->hash         = $request->get('hash');
         

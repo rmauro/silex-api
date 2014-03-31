@@ -1,6 +1,6 @@
 <?php
 
-namespace Api\Core\Authenticator;
+namespace App\Core\Authenticator;
 
 class PrivateKey extends Authenticator
 {

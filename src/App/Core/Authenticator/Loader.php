@@ -1,6 +1,6 @@
 <?php
 
-namespace Api\Core\Authenticator;
+namespace App\Core\Authenticator;
 
 use Symfony\Component\HttpFoundation\Request;
 
@@ -21,7 +21,7 @@ class Loader
     
     protected static function create($authName, $app, $request)
     {
-        $authName = '\Api\Core\Authenticator\\'.$authName;
+        $authName = '\App\Core\Authenticator\\'.$authName;
         if (!class_exists($authName)) {
             throw new Exception("Authenticator $authName not found!");
         }

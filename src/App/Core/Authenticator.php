@@ -18,10 +18,6 @@ class Authenticator
             return true;
         }
         
-        if($this->app['session']->get('user') === null){
-            return $this->app->redirect($this->app['auth.login']);
-        }
-        
         return true;
     }
 }

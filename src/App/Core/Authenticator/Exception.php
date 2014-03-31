@@ -1,7 +1,7 @@
 <?php
 
-namespace Api\Core\Authenticator;
+namespace App\Core\Authenticator;
 
-class Exception extends \Api\Exception
+class Exception extends \App\Exception
 {
 }

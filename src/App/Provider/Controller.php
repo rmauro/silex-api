@@ -4,7 +4,8 @@ namespace App\Provider;
 
 use Silex\Application;
 use Silex\ControllerProviderInterface;
-use Sapp\Core;
+use App\Core;
+use Symfony\Component\HttpFoundation\Response;
 
 class Controller implements ControllerProviderInterface
 {
@@ -13,23 +14,11 @@ class Controller implements ControllerProviderInterface
     {
         $controllers = $app['controllers_factory'];
         $appController = $this;
-        
-        $app->match('/', function() use($app){
-            return $app->redirect('/Auth/login');
-        });
-        
-        $app->match('/404', function() use($app){
-            $request = $app['http.request'];
-            $subRequest = $request::create('/General/page404', 'GET');
-            return $app->handle($subRequest, \Symfony\Component\HttpKernel\HttpKernelInterface::SUB_REQUEST);
-        });
 
         $app->match('/{controller}/{parts}',
                         function ($controller, $parts) use ($app, $appController) {
                             $controller = $appController->getController($controller, $app);
-                            $appController->execute($controller, $parts);
-
-                            return $app['http.response'];
+                            return $appController->execute($controller, $parts);
                         })
                 ->assert('parts', '.*')
                 ->convert('parts',
@@ -38,9 +27,6 @@ class Controller implements ControllerProviderInterface
                         });
 
         $app->error(function(\Exception $e, $code) use ($app) {
-            if($e instanceof \App\Exception){
-                return $app->redirect('/404');
-            }
             
             $response = $app['http.response'];
             $response->setContent($e->getMessage());
@@ -62,7 +48,7 @@ class Controller implements ControllerProviderInterface
         }
         
         $authenticator = $app['authenticator']($name);
-        $authenticator->run();
+        //$authenticator->run();
         
         return new $name($app);
     }
@@ -79,7 +65,8 @@ class Controller implements ControllerProviderInterface
             throw new InvalidActionException("Action $action does not exist!");
         }
 
-        $controller->$action();
+        $response = $controller->$action();
+        return new Response(json_encode($response), 200, array('Cache-Control' => 's-maxage=120', 'ETag' => uniqid()));
     }
 
 }

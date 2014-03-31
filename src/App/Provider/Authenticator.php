@@ -11,7 +11,7 @@ class Authenticator implements ServiceProviderInterface
     public function register(Application $app)
     {
         $app['authenticator'] = $app->protect(function($controller) use ($app){
-            return \Api\Core\Authenticator\Loader::getAuthenticator($app, $controller, \Zend\Config\Factory::fromFile($app['auth.config']), Request::createFromGlobals());
+            return \App\Core\Authenticator\Loader::getAuthenticator($app, $controller, \Zend\Config\Factory::fromFile($app['auth.config']), Request::createFromGlobals());
         });
     }
     
