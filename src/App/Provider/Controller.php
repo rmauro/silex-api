@@ -48,7 +48,7 @@ class Controller implements ControllerProviderInterface
         }
         
         $authenticator = $app['authenticator']($name);
-        //$authenticator->run();
+        $authenticator->run();
         
         return new $name($app);
     }

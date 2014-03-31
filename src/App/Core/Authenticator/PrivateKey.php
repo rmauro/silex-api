@@ -13,7 +13,7 @@ class PrivateKey extends Authenticator
         $generatedHash = $this->getHash();
 
         if ($generatedHash != $this->hash) {
-            throw new Exception('AUTH_INVALID_HASH_MESSAGE', 'AUTH_INVALID_HASH_CODE');
+            throw new Exception('AUTH_INVALID_HASH_MESSAGE'.$generatedHash);
         }
     }
     

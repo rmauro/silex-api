@@ -27,18 +27,18 @@ abstract class Authenticator
     public function hash($key = '')
     {
         /**
-         * Authentication code goes here.
+         * Authentication code goes here. Recover priv-key using $this->publicKey
          */
         $serverKey = [
-            'private' => 'sample_key',
-            'public' => md5('sample_key')
+            'private' => 'priv-key',
+            'public' => 'pub-key'
         ];
         
-        if (!($key === md5($serverKey['sample_key']))) {
-            throw new Exception('AUTH_INVALID_PUBLIC_KEY_MESSAGE', 'AUTH_INVALID_PUBLIC_KEY_CODE');
+        if (!($serverKey)) {
+            throw new Exception('AUTH_INVALID_PUBLIC_KEY_MESSAGE');
         }
-        
-        return hash_hmac('sha256', $this->request->get('json-data'), $keys['private_key'].$key);
+
+        return hash_hmac('sha256', $this->request->get('json-data'), $serverKey['private'].$key);
     }
 
     protected function setOutput()
